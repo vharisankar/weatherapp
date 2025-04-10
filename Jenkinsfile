@@ -4,21 +4,21 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/vharisankar/weatherapp/tree/main'
+                git url: 'https://github.com/vharisankar/weatherapp.git', branch: 'main'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t weather-app .'
+                sh 'docker build -t weather-app .'
             }
         }
 
         stage('Run Container') {
             steps {
-                bat 'docker stop weather-container || exit 0'
-                bat 'docker rm weather-container || exit 0'
-                bat 'docker run -d -p 8000:8000 --name weather-container weather-app'
+                sh 'docker stop weather-container || true'
+                sh 'docker rm weather-container || true'
+                sh 'docker run -d -p 8000:8000 --name weather-container weather-app'
             }
         }
     }
